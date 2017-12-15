@@ -1,0 +1,109 @@
+<main>
+    <div style="margin-top:10px;"></div>
+  <h5>Dashboard</h5>
+  <hr/>
+  <div class="row">
+   <b> 
+  <label class="col-sm-2">Search:</label></b> 
+   <div class="col-sm-8">
+  <input class="form-control" #txtFname placeholder="first name" />
+  <div style="margin-top:10px;"></div>
+  </div>
+  </div>
+  <table class="table table-hover">
+    <thead>
+      <tr class="table-primary">
+        <td>#</td>
+        <td>First Name</td>
+        <td>Last Name</td>
+        <td>Email</td>
+        <td>Phone</td>
+        <td></td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let customer of customers">
+        <td scope="row">{{customer.id}}</td>
+        <td>{{customer.firstName}}</td>
+        <td>{{customer.lastName}}</td>
+        <td>{{customer.email}}</td>
+        <td>{{customer.phone}}</td>
+        <td><!--(click)="editCustomer(customer.id)"-->
+          <button class="btn btn-warning"(click)="openModal(template)" >Edit</button> |
+          <button class="btn btn-danger" (click)="deleteCustomer(customer.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="float-right">
+    <pagination [totalItems]="bigTotalItems" [(ngModel)]="bigCurrentPage" [maxSize]="maxSize" class="pagination-sm" [boundaryLinks]="true"></pagination>
+  </div>
+</main>
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Edit Customer</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <!--Start of a Form on to the modal-->
+        <div class="container" style="max-width:90%;">
+        <form (ngSubmit)="editCustomer(myForm.value, myForm.valid)" #myForm="ngForm" novalidate>
+          <!--use id for getting data but the id is disabled or hide-->
+          
+          <!--End of code with the id-->
+            <div class="form-group row">
+                <label for="firstName" class="col-sm-3 col-form-label">First Name</label>
+                <div class="col-sm-9">
+                    <input type="text" name="firstName" #firstName="ngModel" [(ngModel)]="user.firstName" required class="form-control" id="firstName"
+                        placeholder="First name">
+                    <span [hidden]="firstName.valid || (firstName.pristine && !myForm.submitted)" class="text-danger">
+                        First name is required.
+                    </span>
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label for="lastName" class="col-sm-3 col-form-label">Last Name</label>
+                <div class="col-sm-9">
+                    <input type="text" name="lastName" [(ngModel)]="user.lastName" class="form-control" id="lastName" placeholder="Last name"
+                        #lastName="ngModel" required>
+                    <span [hidden]="lastName.valid || (lastName.pristine && !myForm.submitted)" class="text-danger">
+                        Last name is required.
+                    </span>
+                </div>
+            </div>
+            <!--For email and phone no.-->
+            <div class="form-group row">
+                <label for="email" class="col-sm-3 col-form-label">Email</label>
+                <div class="col-sm-9">
+                    <input type="email" name="email" [(ngModel)]="user.email" class="form-control" id="email" placeholder="Email"
+                        #email="ngModel" required>
+                    <span [hidden]="email.valid || (email.pristine && !myForm.submitted)" class="text-danger">
+                        Email is required.
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="phone" class="col-sm-3 col-form-label">Phone No.</label>
+                <div class="col-sm-9">
+                    <input type="text" name="phone" [(ngModel)]="user.phone" class="form-control" id="phone" placeholder="Phone no"
+                        #phone="ngModel" required>
+                    <span [hidden]="phone.valid || (phone.pristine && !myForm.submitted)" class="text-danger">
+                        Phone no. is required.
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="offset-sm-2 col-sm-10">
+                    <button type="submit" class="btn btn-warning pull-right">Edit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--End of a form on to the modal-->
+  </div>
+</ng-template>
